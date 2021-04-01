@@ -12,8 +12,8 @@
     </managed-bean>
 
     <managed-bean>
-        <managed-bean-name>helloBean</managed-bean-name>
-        <managed-bean-class>com.example.ProjectJavaWebApp.HelloBean</managed-bean-class>
+        <managed-bean-name>energyConsomptionBean</managed-bean-name>
+        <managed-bean-class>com.example.ProjectJavaWebApp.EmployeeConsomptionBean</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 
