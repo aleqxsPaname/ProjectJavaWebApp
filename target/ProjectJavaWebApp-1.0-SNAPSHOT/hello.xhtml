@@ -29,14 +29,10 @@
 
         am4core.ready(function() {
 
-// Themes begin
             am4core.useTheme(am4themes_animated);
-// Themes end
 
-// Create chart
             var chart = am4core.create("chartdiv", am4charts.XYChart);
             chart.paddingRight = 200;
-
 
             var dataTime =  [{
                 "time": "01:00",
@@ -52,7 +48,6 @@
             }, {
                 "time": "20:15",
                 "value": 3500
-
             }];
 
             chart.data = dataTime;
@@ -60,8 +55,7 @@
 
             var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
             dateAxis.renderer.minGridDistance = 60;
-            dateAxis.baseInterval.disabled = true; // = {timeUnit:"minute", count:1};
-//dateAxis.tooltip.disabled = true;
+            dateAxis.baseInterval.disabled = true;
             dateAxis.gridIntervals.setAll([{ timeUnit: "minute", count: 120 }]);
 
             var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
@@ -79,8 +73,6 @@
             chart.cursor.lineX.strokeWidth = 0;
             chart.cursor.lineX.fill = chart.colors.getIndex(1);
             chart.cursor.lineX.fillOpacity = 0.1;
-
-//chart.scrollbarX = new am4core.Scrollbar();
 
         });
     </script>
