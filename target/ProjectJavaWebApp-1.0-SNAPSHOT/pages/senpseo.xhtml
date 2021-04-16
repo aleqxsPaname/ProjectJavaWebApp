@@ -1,0 +1,88 @@
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h1>SENPSEO SIMULATION</h1>
+
+    <h2>JSON RETRIEVED BELOW</h2>
+    <h3 id="titre3">Hypothses object below as a JSON object:</h3>
+    <p>#{generateAmchartsJson.hypotheses}</p>
+
+
+    <div id="senseo_chart"></div>
+
+    <script type="text/javascript">
+
+        am4core.ready(function() {
+
+// Themes begin
+            am4core.useTheme(am4themes_animated);
+// Themes end
+
+// Create chart instance
+            var chart = am4core.create("senseo_chart", am4charts.XYChart);
+            var seoAxis = chart.xAxes.push(new am4charts.ValueAxis());
+            var senpAxis = chart.yAxes.push(new am4charts.ValueAxis());
+
+            var hypothesesString = '#{generateAmchartsJson.hypotheses}';
+            var hypotheses = JSON.parse(hypothesesString)
+
+
+            for (var i = 0; i &lt; hypotheses.length; i++) {
+                createSeriesBasedOnData(hypotheses[i]);
+            }
+
+
+            function createSeriesBasedOnData(h){
+
+                var series = chart.series.push(new am4charts.LineSeries());
+                series.dataFields.valueX = "valueSenp";
+                series.dataFields.valueY = "valueSeo";
+                series.name = h.name;
+                series.tooltipText = name+": {valueY.value}";
+                series.data = h.points;
+                series.strokeWidth = 3;
+                series.stroke = am4core.color(h.color);
+                return series;
+            }
+
+// Barre horizontale
+            var vertical = senpAxis.axisRanges.create();
+            vertical.value = 250;
+            vertical.grid.stroke = am4core.color("purple");
+            vertical.grid.strokeWidth = 2;
+            vertical.grid.strokeOpacity = 1;
+            vertical.grid.strokeDasharray = 10;
+
+// barre verticale
+            var horizontal = seoAxis.axisRanges.create();
+            horizontal.value = 1000;
+            horizontal.grid.stroke = am4core.color("red");
+            horizontal.grid.strokeWidth = 2;
+            horizontal.grid.strokeOpacity = 1;
+            horizontal.grid.strokeDasharray = 10;
+
+
+// Add cursor
+            chart.cursor = new am4charts.XYCursor();
+            chart.cursor.fullWidthLineX = true;
+            chart.cursor.xAxis = seoAxis;
+            chart.cursor.lineX.strokeOpacity = 1;
+            chart.cursor.lineX.fill = am4core.color("#000");
+            chart.cursor.lineX.fillOpacity = 0.1;
+
+// Add legend
+            chart.legend = new am4charts.Legend();
+
+
+        }); // end am4core.ready()
+
+
+
+    </script>
+
+
+
+</ui:composition>

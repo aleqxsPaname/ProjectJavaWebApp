@@ -1,0 +1,136 @@
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+
+
+    <h1>REALTOR SIMULATION</h1>
+
+    <h2>JSON RETRIEVED BELOW</h2>
+    <h3>Clos data:</h3>
+    <p>#{generateAmchartsJson.dataclos}</p>
+    <h3>Clim data:</h3>
+    <p>#{generateAmchartsJson.dataclim}</p>
+
+    <div id="realtor_chart"></div>
+
+    <script type="text/javascript">
+
+        am4core.ready(function() {
+
+            // Themes begin
+            am4core.useTheme(am4themes_animated);
+            // Themes end
+
+            // Create chart instance
+            var chart = am4core.create("realtor_chart", am4charts.XYChart);
+
+            // Create axes (keep both otherwise it won"t be working)
+            var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+            var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());//keep this line
+
+            chart.dateFormatter.inputDateFormat = "HH:mm";
+
+            createSeries("closValue", "Clos");
+            createSeries("climValue", "Clim");
+
+
+            // create data
+            function createDataTime(s){
+
+                var dataClosString = '#{generateAmchartsJson.dataclos}';
+                var dataClos = JSON.parse(dataClosString)
+
+                var dataClimString = '#{generateAmchartsJson.dataclim}';
+                var dataClim = JSON.parse(dataClimString)
+
+                if(s==="closValue") return dataClos
+                if(s==="climValue") return dataClim
+            }
+
+
+
+
+            // Create series
+            function createSeries(s, name) {
+                var series = chart.series.push(new am4charts.StepLineSeries());
+                series.dataFields.valueY = s;
+                series.dataFields.dateX = "heureDebut";
+                series.name = name;
+                series.tooltipText = name+": {valueY.value}";
+
+                var segment = series.segments.template;
+                segment.interactionsEnabled = true;
+
+                var hoverState = segment.states.create("hover");
+                hoverState.properties.strokeWidth = 3;
+
+                var dimmed = segment.states.create("dimmed");
+                dimmed.properties.stroke = am4core.color("#dadada");
+
+                segment.events.on("over", function(event) {
+                    processOver(event.target.parent.parent.parent);
+                });
+
+                segment.events.on("out", function(event) {
+                    processOut(event.target.parent.parent.parent);
+                });
+
+                var data = createDataTime(s);
+
+                series.data = data;
+                return series;
+            }
+
+            chart.legend = new am4charts.Legend();
+            chart.legend.position = "right";
+            chart.legend.scrollable = true;
+            chart.legend.itemContainers.template.events.on("over", function(event) {
+                processOver(event.target.dataItem.dataContext);
+            })
+
+            chart.legend.itemContainers.template.events.on("out", function(event) {
+                processOut(event.target.dataItem.dataContext);
+            })
+
+            function processOver(hoveredSeries) {
+                hoveredSeries.toFront();
+
+                hoveredSeries.segments.each(function(segment) {
+                    segment.setState("hover");
+                })
+
+                chart.series.each(function(series) {
+                    if (series != hoveredSeries) {
+                        series.segments.each(function(segment) {
+                            segment.setState("dimmed");
+                        })
+                        series.bulletsContainer.setState("dimmed");
+                    }
+                });
+            }
+
+            function processOut(hoveredSeries) {
+                chart.series.each(function(series) {
+                    series.segments.each(function(segment) {
+                        segment.setState("default");
+                    })
+                    series.bulletsContainer.setState("default");
+                });
+            }
+
+            // Add cursor
+            chart.cursor = new am4charts.XYCursor();
+            chart.cursor.fullWidthLineX = true;
+            chart.cursor.xAxis = dateAxis;
+            chart.cursor.lineX.strokeOpacity = 0;
+            chart.cursor.lineX.fill = am4core.color("#000");
+            chart.cursor.lineX.fillOpacity = 0.1;
+
+        }); // end am4core.ready()
+
+
+    </script>
+</ui:composition>

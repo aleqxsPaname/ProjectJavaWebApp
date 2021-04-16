@@ -1,0 +1,15 @@
+#senseo_chart {
+    width: 50%;
+    height: 500px;
+    max-width: 100%;
+}
+
+#realtor_chart {
+    width: 50%;
+    height: 500px;
+    max-width: 100%;
+}
+
+h1 {
+    color: darkblue;
+}

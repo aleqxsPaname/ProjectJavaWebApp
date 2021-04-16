@@ -5,16 +5,14 @@
               xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
                                   http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_3.xsd">
 
+
     <managed-bean>
-        <managed-bean-name>helloTest</managed-bean-name>
-        <managed-bean-class>com.example.ProjectJavaWebApp.HelloTest</managed-bean-class>
+        <managed-bean-name>generateAmchartsJson</managed-bean-name>
+        <managed-bean-class>com.example.ProjectJavaWebApp.GenerateAmchartsJson</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 
-    <managed-bean>
-        <managed-bean-name>energyConsomptionBean</managed-bean-name>
-        <managed-bean-class>com.example.ProjectJavaWebApp.EmployeeConsomptionBean</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
+
+
 
 </faces-config>
