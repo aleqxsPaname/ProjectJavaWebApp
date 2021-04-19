@@ -1,39 +1,49 @@
 package com.example.ProjectJavaWebApp.model.senpSeoGraph;
 
-import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
-@AllArgsConstructor
+
 @NoArgsConstructor
+@Getter
 public class Courbe {
 
+    private int index;
     private String name;
-
     private String color;
-
-    private String comment;
-
+    private String etiquette;
     private List<Point> points;
 
-    public List<Point> getPoints(){
-        System.out.println("YES WE ARE INSIDE THIS METHOD");
-        return getPointsWhereSenpOverLimit();
+    public Courbe(int index, String name, String color, String etiquette, List<Point> points) throws Exception{
+        if(isListOfPointsValid(points)){
+            this.index = index;
+            this.name = name;
+            this.color = color;
+            this.etiquette = etiquette;
+            this.points = points;
+        }else{
+            throw new Exception("invalid Points - you must at least have 2 valid points to create a courbe (impact=small) courbe won't be created");
+        }
     }
 
-    private List<Point> getPointsWhereSenpOverLimit(){
-        List<Point> pointToBeReturned = new ArrayList<>();
-        List<Point> points = this.points;
+    private boolean isListOfPointsValid(List<Point> points){
+       return haveMoreThan2PointsWithValue(points);
+    }
+
+    private boolean haveMoreThan2PointsWithValue(List<Point> points){
+        int validPointCompteur = 0;
         for(Point point:points) {
-            if (point.getValueSenp() > 1500) {
-                pointToBeReturned.add(point);
-            } else {
-                System.out.println("INVALID POINT IDENTIFIED");
+            if (point.getValueSenp() != null && point.getValueSeo() != null) {
+                validPointCompteur++;
             }
         }
-        return pointToBeReturned;
+        if(validPointCompteur >= 2){
+            return true;
+        }
+        return false;
     }
+
 }

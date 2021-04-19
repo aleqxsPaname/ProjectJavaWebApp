@@ -28,10 +28,10 @@ public class GenerateAmchartsJson {
         return this.gson.toJson(climList);
     }
 
-    public String getHypotheses(){
+   /* public String getHypotheses(){
         List<Courbe> courbes = generateHypothese();
         return this.gson.toJson(courbes);
-    }
+    }*/
 
     private List<Clos> generateClosList(){
         List<Clos> closList = new ArrayList<>();
@@ -59,18 +59,23 @@ public class GenerateAmchartsJson {
         return climList;
     }
 
-    private List<Courbe> generateHypothese(){
+  /*  private List<Courbe> generateHypothese(){
         List<Courbe> courbes = new ArrayList<>();
-        courbes.add(new Courbe("hypothese1", "blue", "h1", generateRandomPoints()));
-        courbes.add(new Courbe("hypothese2", "red", "h2", generateRandomPoints()));
-        courbes.add(new Courbe("hypothese3", "purple", "h3", generateRandomPoints()));
-        return courbes;
-    }
+        try {
+            courbes.add(new Courbe(1, "hypothese1", "blue", "h1", generateRandomPoints()));
+            courbes.add(new Courbe(2, "hypothese2", "red", "h2", generateRandomPoints()));
+            courbes.add(new Courbe(3, "hypothese3", "purple", "h3", generateRandomPoints()));
+        }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+    }
+*/
     private List<Point> generateRandomPoints(){
         List<Point> points = new ArrayList();
-        points.add(new Point(1000 + random(), 1100 + random()));
-        points.add(new Point(1200 + random(), 1140 + random()));
+        points.add(new Point(1000L + random(), 1100L + random()));
+        points.add(new Point(1200L + random(), 1140L + random()));
         return points;
     }
 
